@@ -1,5 +1,6 @@
 package com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime;
 
+import org.apache.camel.BindToRegistry;
 import org.apache.camel.spi.ComponentCustomizer;
 
 import com.github.dmitriipisarev.HandlingHttpBinding;
@@ -8,7 +9,6 @@ import com.github.dmitriipisarev.ServletCustomFilterStrategy;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Named;
 
 @ApplicationScoped
 public class CamelCustomServletConfiguration {
@@ -17,10 +17,8 @@ public class CamelCustomServletConfiguration {
     public ServletCustomFilterStrategy servletCustomFilterStrategy() {
         return new ServletCustomFilterStrategy();
     }
-
-    @Produces
-    @Named("handlingHttpBinding")
-    @ApplicationScoped
+    
+    @BindToRegistry("handlingHttpBinding")
     public HandlingHttpBinding handlingHttpBinding(ServletCustomFilterStrategy servletCustomFilterStrategy) {
         return new HandlingHttpBinding(servletCustomFilterStrategy);
     }
