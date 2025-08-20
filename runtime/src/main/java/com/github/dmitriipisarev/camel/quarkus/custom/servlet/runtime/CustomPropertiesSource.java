@@ -3,11 +3,8 @@ package com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime;
 import java.util.UUID;
 
 import org.apache.camel.spi.PropertiesSource;
-import org.apache.camel.spi.annotations.JdkService;
-
 import jakarta.enterprise.context.ApplicationScoped;
 
-@JdkService("properties-source-factory")
 @ApplicationScoped
 public class CustomPropertiesSource implements PropertiesSource {
 
