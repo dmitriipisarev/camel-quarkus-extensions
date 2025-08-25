@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCustomServletConfig;
+import com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CustomContextRecorder;
 import com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCustomServletConfig.ServletConfig;
 import com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCustomServletConfig.ServletConfig.MultipartConfig;
 
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
+import io.quarkus.deployment.annotations.ExecutionTime;
+import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 
 import java.util.Map.Entry;
@@ -16,6 +19,8 @@ import io.quarkus.undertow.deployment.ServletBuildItem;
 import io.quarkus.undertow.deployment.ServletBuildItem.Builder;
 import io.quarkus.undertow.deployment.WebMetadataBuildItem;
 import jakarta.servlet.MultipartConfigElement;
+
+import org.apache.camel.quarkus.core.deployment.spi.CamelContextBuildItem;
 import org.jboss.metadata.web.spec.WebMetaData;
 
 import static com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCustomServletConfig.ServletConfig.DEFAULT_SERVLET_CLASS;
@@ -107,5 +112,13 @@ class CamelQuarkusCustomServletProcessor {
         }
 
         return builder.build();
+    }
+
+    @BuildStep
+    @Record(ExecutionTime.STATIC_INIT)
+    void replaceXmlRouteBuilderLoader(
+            CustomContextRecorder recorder,
+            CamelContextBuildItem buildItem) {
+        recorder.replaceXmlBuilder(buildItem.getCamelContext());
     }
 }
