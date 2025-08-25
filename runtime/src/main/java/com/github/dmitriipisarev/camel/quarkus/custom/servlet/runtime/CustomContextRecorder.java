@@ -4,15 +4,14 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ExtendedCamelContext;
 import org.apache.camel.dsl.xml.io.XmlRoutesBuilderLoader;
 import org.apache.camel.spi.CamelContextCustomizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
+import org.jboss.logging.Logger;
 
 @Recorder
 public class CustomContextRecorder {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomContextRecorder.class);
+    private static final Logger LOG = Logger.getLogger(CustomContextRecorder.class);
 
     public void replaceXmlBuilder(RuntimeValue<CamelContext> camelContext) {
         LOG.info("Trying to replace xml loader");
