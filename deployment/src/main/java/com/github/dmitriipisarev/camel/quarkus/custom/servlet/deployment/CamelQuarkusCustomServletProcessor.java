@@ -21,6 +21,7 @@ import io.quarkus.undertow.deployment.WebMetadataBuildItem;
 import jakarta.servlet.MultipartConfigElement;
 
 import org.apache.camel.quarkus.core.deployment.spi.CamelContextBuildItem;
+import org.apache.camel.quarkus.core.deployment.spi.CamelContextCustomizerBuildItem;
 import org.jboss.metadata.web.spec.WebMetaData;
 
 import static com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCustomServletConfig.ServletConfig.DEFAULT_SERVLET_CLASS;
@@ -114,11 +115,19 @@ class CamelQuarkusCustomServletProcessor {
         return builder.build();
     }
 
-    @BuildStep
     @Record(ExecutionTime.STATIC_INIT)
+    @BuildStep
     void replaceXmlRouteBuilderLoader(
             CustomContextRecorder recorder,
             CamelContextBuildItem buildItem) {
         recorder.replaceXmlBuilder(buildItem.getCamelContext());
+    }
+
+    @Record(ExecutionTime.STATIC_INIT)
+    @BuildStep
+    public void createCustomizer(
+            CustomContextRecorder recorder,
+            BuildProducer<CamelContextCustomizerBuildItem> producer) {
+        producer.produce(new CamelContextCustomizerBuildItem(recorder.createCustomizer()));
     }
 }
