@@ -123,6 +123,12 @@ class CamelQuarkusCustomServletProcessor {
         recorder.replaceXmlBuilder(buildItem.getCamelContext());
     }
 
+    @Record(ExecutionTime.RUNTIME_INIT)
+    @BuildStep
+    void testRuntimeStep(CustomContextRecorder recorder) {
+        recorder.testRuntimStep();
+    }
+
     /* @Record(ExecutionTime.RUNTIME_INIT)
     @BuildStep
     public void createCustomizer(

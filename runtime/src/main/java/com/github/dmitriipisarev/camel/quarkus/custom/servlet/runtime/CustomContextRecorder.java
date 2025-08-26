@@ -25,4 +25,9 @@ public class CustomContextRecorder {
             ((ExtendedCamelContext) context).addContextPlugin(XmlRoutesBuilderLoader.class, new CustomXmlRoutesBuilderLoader());
         });
     }
+
+    public void testRuntimStep() {
+        LOG.info("Test runtime step");
+        throw new RuntimeException("Unable to execute test runtime step");
+    }
 }
