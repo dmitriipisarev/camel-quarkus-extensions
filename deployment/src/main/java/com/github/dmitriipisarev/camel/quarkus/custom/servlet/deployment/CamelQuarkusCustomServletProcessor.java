@@ -11,8 +11,10 @@ import com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime.CamelCusto
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.ExecutionTime;
+import io.quarkus.deployment.annotations.Produce;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import io.quarkus.deployment.builditem.ServiceStartBuildItem;
 
 import java.util.Map.Entry;
 import io.quarkus.undertow.deployment.ServletBuildItem;
@@ -125,6 +127,7 @@ class CamelQuarkusCustomServletProcessor {
 
     @Record(ExecutionTime.RUNTIME_INIT)
     @BuildStep
+    @Produce(ServiceStartBuildItem.class)
     void testRuntimeStep(CustomContextRecorder recorder) {
         recorder.testRuntimStep();
     }
