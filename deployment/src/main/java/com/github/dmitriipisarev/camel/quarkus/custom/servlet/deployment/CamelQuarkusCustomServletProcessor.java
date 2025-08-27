@@ -117,7 +117,7 @@ class CamelQuarkusCustomServletProcessor {
         return builder.build();
     }
 
-    @Record(ExecutionTime.RUNTIME_INIT)
+    @Record(ExecutionTime.STATIC_INIT)
     @BuildStep
     void replaceXmlRouteBuilderLoader(
             CustomContextRecorder recorder,
@@ -125,14 +125,14 @@ class CamelQuarkusCustomServletProcessor {
         recorder.replaceXmlBuilder(buildItem.getCamelContext());
     }
 
-    @Record(ExecutionTime.RUNTIME_INIT)
+    /* @Record(ExecutionTime.RUNTIME_INIT)
     @BuildStep
     @Produce(ServiceStartBuildItem.class)
     void testRuntimeStep(CustomContextRecorder recorder) {
         recorder.testRuntimStep();
     }
 
-    /* @Record(ExecutionTime.RUNTIME_INIT)
+     @Record(ExecutionTime.RUNTIME_INIT)
     @BuildStep
     public void createCustomizer(
             CustomContextRecorder recorder,
