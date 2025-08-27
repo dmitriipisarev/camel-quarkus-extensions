@@ -15,7 +15,6 @@ public class CustomContextRecorder {
 
     public void replaceXmlBuilder(RuntimeValue<CamelContext> camelContext) {
         LOG.info("Trying to replace xml loader");
-        //throw new RuntimeException("Unable to replace xml loader");
         camelContext.getValue().getCamelContextExtension().addContextPlugin(XmlRoutesBuilderLoader.class, new CustomXmlRoutesBuilderLoader());
     }
 
