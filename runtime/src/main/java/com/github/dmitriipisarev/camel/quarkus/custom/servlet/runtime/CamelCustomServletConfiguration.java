@@ -1,7 +1,6 @@
 package com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime;
 
 import org.apache.camel.spi.ComponentCustomizer;
-import org.apache.camel.spi.RoutesBuilderLoader;
 
 import com.github.dmitriipisarev.HandlingHttpBinding;
 import com.github.dmitriipisarev.ServletCustomComponent;
@@ -33,12 +32,5 @@ public class CamelCustomServletConfiguration {
                 .build((component) -> {
                     component.setHeaderFilterStrategy(servletCustomFilterStrategy);
                 });
-    }
-
-    @Produces
-    @ApplicationScoped
-    @Named("routes-builder-loader-xml")
-    public RoutesBuilderLoader customXmlBeanLoader() {
-        return new CustomXmlRoutesBuilderLoader();
     }
 }

@@ -1,9 +1,9 @@
 package com.github.dmitriipisarev.camel.quarkus.custom.servlet.runtime;
 
 import org.apache.camel.CamelContext;
-import org.apache.camel.ExtendedCamelContext;
-import org.apache.camel.dsl.xml.io.XmlRoutesBuilderLoader;
+import org.apache.camel.Service;
 import org.apache.camel.spi.CamelContextCustomizer;
+import org.apache.camel.spi.RoutesBuilderLoader;
 
 import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
@@ -15,18 +15,27 @@ public class CustomContextRecorder {
 
     public void replaceXmlBuilder(RuntimeValue<CamelContext> camelContext) {
         LOG.info("Trying to replace xml loader");
-        camelContext.getValue().getCamelContextExtension().addContextPlugin(XmlRoutesBuilderLoader.class, new CustomXmlRoutesBuilderLoader());
+        camelContext.getValue().getCamelContextExtension().addContextPlugin(RoutesBuilderLoader.class, new CustomXmlRoutesBuilderLoader());
     }
 
     public RuntimeValue<CamelContextCustomizer> createCustomizer() {
         LOG.info("Trying to create customizer");
         return new RuntimeValue<>(context -> {
-            ((ExtendedCamelContext) context).addContextPlugin(XmlRoutesBuilderLoader.class, new CustomXmlRoutesBuilderLoader());
+            addServiceToContext(context);
         });
     }
 
-    public void testRuntimStep() {
-        LOG.info("Test runtime step");
-        throw new RuntimeException("Unable to execute test runtime step");
+    private void addServiceToContext(CamelContext context) {
+        for (Service serv : context.getCamelContextExtension().getServices()) {
+            LOG.info(String.format("Service id = %s", serv.toString()));
+        }
+
+        CustomXmlRoutesBuilderLoader service = new CustomXmlRoutesBuilderLoader();
+        try {
+            context.addService(service);
+            service.start();
+        } catch (Exception e) {
+            LOG.error("Unable to add service", e);
+        }
     }
 }
